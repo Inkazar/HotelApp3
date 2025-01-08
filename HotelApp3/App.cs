@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelApp3
 {
@@ -16,15 +18,25 @@ namespace HotelApp3
     {
         public static void Run()
         {
-            var dbContext = new ApplicationDbContext();
+            var dbRepositoryContext = new ApplicationDbContext();
 
           
-            dbContext.Database.EnsureCreated();
+           // dbContext.Database.EnsureCreated();
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json",true,true);
+            var configuration = builder.Build();
 
-          
-            var customerRepository = new CustomerRepository(dbContext);
-            var roomRepository = new RoomRepository(dbContext);
-            var bookingRepository = new BookingRepository(dbContext);
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            options.UseSqlServer(connectionString);
+
+            using (var dbContext = new ApplicationDbContext())
+            {
+                dbContext.Database.Migrate();
+            }
+
+            var customerRepository = new CustomerRepository(dbRepositoryContext);
+            var roomRepository = new RoomRepository(dbRepositoryContext);
+            var bookingRepository = new BookingRepository(dbRepositoryContext);
 
           
             var customerService = new CustomerService(customerRepository);

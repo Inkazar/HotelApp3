@@ -13,11 +13,14 @@ namespace HotelApp3.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-       
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=DannesHotelAppDb;Trusted_Connection=True;TrustServerCertificate=true;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Server=localhost;Database=DannesHotelAppDb;Trusted_Connection=True;TrustServerCertificate=true;");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
