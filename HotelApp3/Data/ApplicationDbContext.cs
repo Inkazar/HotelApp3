@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HotelApp3.Data
 {
-    public class HotelDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Room> Rooms { get; set; }

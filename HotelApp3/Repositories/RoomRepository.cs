@@ -10,9 +10,9 @@ namespace HotelApp3.Repositories
 {
     public class RoomRepository
     {
-        private readonly HotelDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public RoomRepository(HotelDbContext context)
+        public RoomRepository(ApplicationDbContext context)
         {
             _context = context;
         }
