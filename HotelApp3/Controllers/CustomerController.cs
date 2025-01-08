@@ -1,4 +1,5 @@
 ﻿using System;
+using HotelApp3.Utilities.Functions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,9 @@ namespace HotelApp3.Controllers
 {
     public class CustomerController
     {
-        private readonly CustomerFunctions _functions;
+        private readonly CustomerFunction _functions;
 
-        public CustomerController(CustomerFunctions functions)
+        public CustomerController(CustomerFunction functions)
         {
             _functions = functions;
         }
@@ -19,6 +20,9 @@ namespace HotelApp3.Controllers
 
         public void ViewAllCustomers() => _functions.ViewAllCustomers();
 
+        public void UpdateCustomer() => _functions.UpdateCustomer();
+
         public void DeleteCustomer() => _functions.DeleteCustomer();
+
     }
 }

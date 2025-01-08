@@ -25,8 +25,9 @@ namespace HotelApp3.Utilities
                 Console.WriteLine("--- Kundhantering ---");
                 Console.WriteLine("1. Lägg till kund");
                 Console.WriteLine("2. Visa alla kunder");
-                Console.WriteLine("3. Ta bort kund");
-                Console.WriteLine("4. Gå tillbaka till huvudmenyn");
+                Console.WriteLine("3. Uppdatera kund");
+                Console.WriteLine("4. Ta bort kund");
+                Console.WriteLine("5. Gå tillbaka till huvudmenyn");
                 Console.Write("Välj ett alternativ: ");
 
                 var choice = Console.ReadLine();
@@ -39,9 +40,12 @@ namespace HotelApp3.Utilities
                         _controller.ViewAllCustomers();
                         break;
                     case "3":
-                        _controller.DeleteCustomer();
+                        _controller.UpdateCustomer();
                         break;
                     case "4":
+                        _controller.DeleteCustomer();
+                        break;
+                    case "5":
                         back = true;
                         break;
                     default:

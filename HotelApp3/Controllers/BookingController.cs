@@ -1,4 +1,7 @@
 ﻿using System;
+using HotelApp3.Models;
+using HotelApp3.Utilities.Functions;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +11,9 @@ namespace HotelApp3.Controllers
 {
     public class BookingController
     {
-        private readonly BookingHandler _handler;
+        private readonly BookingFunction _handler;
 
-        public BookingController(BookingHandler handler)
+        public BookingController(BookingFunction handler)
         {
             _handler = handler;
         }

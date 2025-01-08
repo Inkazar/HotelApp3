@@ -1,4 +1,5 @@
 ﻿using System;
+using HotelApp3.Utilities.Functions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,9 +10,9 @@ namespace HotelApp3.Controllers
 {
     public class RoomController
     {
-        private readonly RoomFunctions _functions;
+        private readonly RoomFunction _functions;
 
-        public RoomController(RoomFunctions functions)
+        public RoomController(RoomFunction functions)
         {
             _functions = functions;
         }
