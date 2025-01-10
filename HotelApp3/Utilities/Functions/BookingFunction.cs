@@ -29,21 +29,6 @@ namespace HotelApp3.Utilities.Functions
             Console.Clear();
             Console.WriteLine("--- Lägg till bokning ---");
 
-            int roomId;
-            do
-            {
-                Console.WriteLine("Tillgängliga Rum:");
-                var rooms = _roomService.GetAllRooms().ToList();
-                foreach (var room in rooms)
-                {
-                    Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
-                }
-
-                Console.Write("Ange rummets ID: ");
-            } while (!int.TryParse(Console.ReadLine(), out roomId) || !_roomService.GetAllRooms().Any(r => r.RoomId == roomId));
-
-            var selectedRoom = _roomService.GetRoomById(roomId);
-
             DateTime startDate;
             do
             {
@@ -65,6 +50,33 @@ namespace HotelApp3.Utilities.Functions
                 }
                 Console.WriteLine("Slutdatum måste vara efter startdatum. Försök igen.");
             } while (true);
+
+            Console.WriteLine("Tillgängliga Rum:");
+            var availableRooms = _roomService.GetAllRooms()
+                .Where(r => !_bookingService.GetAllBookings()
+                    .Any(b => b.RoomId == r.RoomId &&
+                              ((startDate >= b.StartDate && startDate < b.EndDate) ||
+                               (endDate > b.StartDate && endDate <= b.EndDate)))).ToList();
+
+            if (!availableRooms.Any())
+            {
+                Console.WriteLine("Inga rum är tillgängliga för de valda datumen.");
+                Console.ReadKey();
+                return;
+            }
+
+            foreach (var room in availableRooms)
+            {
+                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+            }
+
+            int roomId;
+            do
+            {
+                Console.Write("Ange rummets ID: ");
+            } while (!int.TryParse(Console.ReadLine(), out roomId) || !availableRooms.Any(r => r.RoomId == roomId));
+
+            var selectedRoom = _roomService.GetRoomById(roomId);
 
             int extraBeds = 0;
             if (selectedRoom.MaxCapacity > 2)
