@@ -156,21 +156,20 @@ namespace HotelApp3.Utilities.Functions
         {
             Console.Clear();
             Console.WriteLine("--- Lägg till extrasäng ---");
-            ViewAllRooms();
 
             int roomId;
+            Room room;
             do
             {
+                ViewAllRooms();
                 Console.Write("Ange ID för rummet: ");
-            } while (!int.TryParse(Console.ReadLine(), out roomId));
-
-            var room = _roomService.GetRoomById(roomId);
-            if (room == null || room.MaxCapacity <= 2)
-            {
-                Console.WriteLine("Extrasäng kan endast läggas till i rum med kapacitet större än 2.");
-                Console.ReadKey();
-                return;
-            }
+                roomId = int.TryParse(Console.ReadLine(), out int id) ? id : -1;
+                room = _roomService.GetRoomById(roomId);
+                if (room == null || room.MaxCapacity <= 2)
+                {
+                    Console.WriteLine("Extrasäng kan endast läggas till i rum med kapacitet större än 2. Försök igen.");
+                }
+            } while (room == null || room.MaxCapacity <= 2);
 
             room.ExtraBeds++;
             _roomService.UpdateRoom(room);
