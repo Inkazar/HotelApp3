@@ -40,27 +40,31 @@ namespace HotelApp3.Utilities.Functions
                 }
 
                 Console.Write("Ange rummets ID: ");
-            } while (!int.TryParse(Console.ReadLine(), out roomId));
+            } while (!int.TryParse(Console.ReadLine(), out roomId) || !_roomService.GetAllRooms().Any(r => r.RoomId == roomId));
 
             var selectedRoom = _roomService.GetRoomById(roomId);
-            if (selectedRoom == null)
-            {
-                Console.WriteLine("Ogiltigt rum. Försök igen.");
-                Console.ReadKey();
-                return;
-            }
 
             DateTime startDate;
             do
             {
                 Console.Write("Ange startdatum (yyyy-MM-dd): ");
-            } while (!DateTime.TryParse(Console.ReadLine(), out startDate));
+                if (DateTime.TryParse(Console.ReadLine(), out startDate) && startDate >= DateTime.Today)
+                {
+                    break;
+                }
+                Console.WriteLine("Startdatum får inte vara i dåtid. Försök igen.");
+            } while (true);
 
             DateTime endDate;
             do
             {
                 Console.Write("Ange slutdatum (yyyy-MM-dd): ");
-            } while (!DateTime.TryParse(Console.ReadLine(), out endDate) || endDate <= startDate);
+                if (DateTime.TryParse(Console.ReadLine(), out endDate) && endDate > startDate)
+                {
+                    break;
+                }
+                Console.WriteLine("Slutdatum måste vara efter startdatum. Försök igen.");
+            } while (true);
 
             int extraBeds = 0;
             if (selectedRoom.MaxCapacity > 2)
@@ -101,7 +105,7 @@ namespace HotelApp3.Utilities.Functions
                     var customers = _customerService.GetAllCustomers().ToList();
                     foreach (var customer in customers)
                     {
-                        Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
+                        Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}");
                     }
                     Console.Write("Ange befintligt kund-ID: ");
                 } while (!int.TryParse(Console.ReadLine(), out customerId) || !_customerService.GetAllCustomers().Any(c => c.CustomerId == customerId));
@@ -148,7 +152,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"Bokning-ID: {booking.BookingId}, Kund-ID: {booking.CustomerId}, Rum-ID: {booking.RoomId}, Startdatum: {booking.StartDate:yyyy-MM-dd}, Slutdatum: {booking.EndDate:yyyy-MM-dd}, Extrasängar: {booking.ExtraBeds}");
             }
-            Console.WriteLine("Tryck på valfri tangent.");
+            Console.WriteLine("Tryck på valfri tangent för att återgå.");
             Console.ReadKey();
         }
     }
