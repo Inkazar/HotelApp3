@@ -66,7 +66,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
             }
-            Console.WriteLine("Tryck på valfri tangent för att återgå.");
+            Console.WriteLine("Tryck på valfri tangent.");
             Console.ReadKey();
         }
 

@@ -148,7 +148,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"Bokning-ID: {booking.BookingId}, Kund-ID: {booking.CustomerId}, Rum-ID: {booking.RoomId}, Startdatum: {booking.StartDate:yyyy-MM-dd}, Slutdatum: {booking.EndDate:yyyy-MM-dd}, Extrasängar: {booking.ExtraBeds}");
             }
-            Console.WriteLine("Tryck på valfri tangent för att återgå.");
+            Console.WriteLine("Tryck på valfri tangent.");
             Console.ReadKey();
         }
     }
