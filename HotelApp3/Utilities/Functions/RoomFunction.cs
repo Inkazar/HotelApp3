@@ -91,20 +91,41 @@ namespace HotelApp3.Utilities.Functions
             }
 
             Console.WriteLine($"Nuvarande typ: {room.Type}");
-            Console.Write("Ange ny typ (tryck Enter för att behålla): ");
-            var newType = Console.ReadLine();
+            string newType;
+            do
+            {
+                Console.Write("Ange ny typ (Single/Double eller tryck Enter för att behålla): ");
+                newType = Console.ReadLine()?.ToLower();
+                if (string.IsNullOrWhiteSpace(newType) || newType == "single" || newType == "double")
+                {
+                    break;
+                }
+                Console.WriteLine("Ogiltig typ. Du måste ange 'single' eller 'double'.");
+            } while (true);
             room.Type = string.IsNullOrWhiteSpace(newType) ? room.Type : newType;
 
             Console.WriteLine($"Nuvarande kapacitet: {room.MaxCapacity}");
-            Console.Write("Ange ny kapacitet (tryck Enter för att behålla): ");
-            if (int.TryParse(Console.ReadLine(), out int newCapacity))
+            int newCapacity;
+            do
             {
-                room.MaxCapacity = newCapacity;
-            }
+                Console.Write("Ange ny kapacitet (endast siffror, tryck Enter för att behålla): ");
+                var input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    newCapacity = room.MaxCapacity;
+                    break;
+                }
+                if (int.TryParse(input, out newCapacity) && newCapacity > 0 && (room.Type != "single" || newCapacity == 1))
+                {
+                    break;
+                }
+                Console.WriteLine(room.Type == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Kapaciteten måste vara ett positivt heltal.");
+            } while (true);
+            room.MaxCapacity = newCapacity;
 
             Console.WriteLine($"Nuvarande pris: {room.PricePerNight:C}");
             Console.Write("Ange nytt pris (tryck Enter för att behålla): ");
-            if (decimal.TryParse(Console.ReadLine(), out decimal newPrice))
+            if (decimal.TryParse(Console.ReadLine(), out decimal newPrice) && newPrice > 0)
             {
                 room.PricePerNight = newPrice;
             }
