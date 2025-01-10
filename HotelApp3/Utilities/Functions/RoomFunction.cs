@@ -22,14 +22,27 @@ namespace HotelApp3.Utilities.Functions
             Console.Clear();
             Console.WriteLine("--- Lägg till rum ---");
 
-            Console.Write("Ange typ (Single/Double): ");
-            var type = Console.ReadLine();
+            string type;
+            do
+            {
+                Console.Write("Ange typ (Single/Double): ");
+                type = Console.ReadLine()?.ToLower();
+            } while (type != "single" && type != "double");
 
             int maxCapacity;
             do
             {
                 Console.Write("Ange maxkapacitet: ");
-            } while (!int.TryParse(Console.ReadLine(), out maxCapacity));
+                if (type == "single" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity == 1)
+                {
+                    break;
+                }
+                else if (type == "double" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity > 1)
+                {
+                    break;
+                }
+                Console.WriteLine(type == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Ett dubbelrum måste ha kapacitet större än 1.");
+            } while (true);
 
             decimal pricePerNight;
             do

@@ -13,12 +13,15 @@ namespace HotelApp3.Utilities.Functions
         private readonly BookingService _bookingService;
         private readonly CustomerService _customerService;
         private readonly RoomService _roomService;
+        
 
-        public BookingFunction(BookingService bookingService, CustomerService customerService, RoomService roomService)
+        public BookingFunction(BookingService bookingService, CustomerService customerService,
+            RoomService roomService)
         {
             _bookingService = bookingService;
             _customerService = customerService;
             _roomService = roomService;
+            
         }
 
         public void AddBooking()
@@ -69,8 +72,13 @@ namespace HotelApp3.Utilities.Functions
                 } while (!int.TryParse(Console.ReadLine(), out extraBeds) || extraBeds < 0 || extraBeds > (selectedRoom.MaxCapacity - 2));
             }
 
-            Console.Write("Vill du lägga till en ny kund? (ja/nej): ");
-            var addCustomerChoice = Console.ReadLine()?.ToLower();
+            string addCustomerChoice;
+            do
+            {
+                Console.Write("Vill du lägga till en ny kund? (ja/nej): ");
+                addCustomerChoice = Console.ReadLine()?.ToLower();
+            } while (addCustomerChoice != "ja" && addCustomerChoice != "nej");
+
             int customerId;
             if (addCustomerChoice == "ja")
             {
@@ -89,8 +97,14 @@ namespace HotelApp3.Utilities.Functions
             {
                 do
                 {
+                    Console.WriteLine("Befintliga kunder:");
+                    var customers = _customerService.GetAllCustomers().ToList();
+                    foreach (var customer in customers)
+                    {
+                        Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
+                    }
                     Console.Write("Ange befintligt kund-ID: ");
-                } while (!int.TryParse(Console.ReadLine(), out customerId));
+                } while (!int.TryParse(Console.ReadLine(), out customerId) || !_customerService.GetAllCustomers().Any(c => c.CustomerId == customerId));
             }
 
             var booking = new Booking
