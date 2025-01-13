@@ -30,7 +30,7 @@ namespace HotelApp3.Repositories
 
         public void DeleteBooking(int bookingId)
         {
-            var booking = _context.Bookings.FirstOrDefault(b => b.Id == bookingId);
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
             if (booking != null)
             {
                 _context.Bookings.Remove(booking);

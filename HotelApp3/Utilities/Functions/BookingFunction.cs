@@ -54,7 +54,7 @@ namespace HotelApp3.Utilities.Functions
             Console.WriteLine("Tillgängliga Rum:");
             var availableRooms = _roomService.GetAllRooms()
                 .Where(r => !_bookingService.GetAllBookings()
-                    .Any(b => b.RoomId == r.Id &&
+                    .Any(b => b.RoomId == r.RoomId &&
                               ((startDate >= b.StartDate && startDate < b.EndDate) ||
                                (endDate > b.StartDate && endDate <= b.EndDate)))).ToList();
 
@@ -67,14 +67,14 @@ namespace HotelApp3.Utilities.Functions
 
             foreach (var room in availableRooms)
             {
-                Console.WriteLine($"ID: {room.Id}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
 
             int roomId;
             do
             {
                 Console.Write("Ange rummets ID: ");
-            } while (!int.TryParse(Console.ReadLine(), out roomId) || !availableRooms.Any(r => r.Id == roomId));
+            } while (!int.TryParse(Console.ReadLine(), out roomId) || !availableRooms.Any(r => r.RoomId == roomId));
 
             var selectedRoom = _roomService.GetRoomById(roomId);
 
@@ -107,7 +107,7 @@ namespace HotelApp3.Utilities.Functions
 
                 var newCustomer = new Customer { Name = name, Email = email, Phone = phone };
                 _customerService.AddCustomer(newCustomer);
-                customerId = newCustomer.Id;
+                customerId = newCustomer.CustomerId;
             }
             else
             {
@@ -117,10 +117,10 @@ namespace HotelApp3.Utilities.Functions
                     var customers = _customerService.GetAllCustomers().ToList();
                     foreach (var customer in customers)
                     {
-                        Console.WriteLine($"ID: {customer.Id}, Namn: {customer.Name}, E-post: {customer.Email}");
+                        Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}");
                     }
                     Console.Write("Ange befintligt kund-ID: ");
-                } while (!int.TryParse(Console.ReadLine(), out customerId) || !_customerService.GetAllCustomers().Any(c => c.Id == customerId));
+                } while (!int.TryParse(Console.ReadLine(), out customerId) || !_customerService.GetAllCustomers().Any(c => c.CustomerId == customerId));
             }
 
             var booking = new Booking
@@ -162,7 +162,7 @@ namespace HotelApp3.Utilities.Functions
             var bookings = _bookingService.GetAllBookings().ToList();
             foreach (var booking in bookings)
             {
-                Console.WriteLine($"Bokning-ID: {booking.Id}, Kund-ID: {booking.CustomerId}, Rum-ID: {booking.RoomId}, Startdatum: {booking.StartDate:yyyy-MM-dd}, Slutdatum: {booking.EndDate:yyyy-MM-dd}, Extrasängar: {booking.ExtraBeds}");
+                Console.WriteLine($"Bokning-ID: {booking.BookingId}, Kund-ID: {booking.CustomerId}, Rum-ID: {booking.RoomId}, Startdatum: {booking.StartDate:yyyy-MM-dd}, Slutdatum: {booking.EndDate:yyyy-MM-dd}, Extrasängar: {booking.ExtraBeds}");
             }
             Console.WriteLine("Tryck på valfri tangent för att återgå.");
             Console.ReadKey();
