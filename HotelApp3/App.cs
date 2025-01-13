@@ -21,7 +21,7 @@ namespace HotelApp3
             var dbRepositoryContext = new ApplicationDbContext();
 
           
-           // dbContext.Database.EnsureCreated();
+           
             var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json",true,true);
             var configuration = builder.Build();
 

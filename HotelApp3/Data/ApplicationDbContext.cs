@@ -25,6 +25,33 @@ namespace HotelApp3.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Customer relationships
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.Bookings)
+                .WithOne(b => b.Customer)
+                .HasForeignKey(b => b.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Room relationships
+            modelBuilder.Entity<Room>()
+                .HasMany(r => r.Bookings)
+                .WithOne(b => b.Room)
+                .HasForeignKey(b => b.RoomId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Booking relationships
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Customer)
+                .WithMany(c => c.Bookings)
+                .HasForeignKey(b => b.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Room)
+                .WithMany(r => r.Bookings)
+                .HasForeignKey(b => b.RoomId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Room>().HasData(
                 new Room { RoomId = 1, Type = "Single", MaxCapacity = 1, PricePerNight = 500 },
                 new Room { RoomId = 2, Type = "Double", MaxCapacity = 2, PricePerNight = 800 },
