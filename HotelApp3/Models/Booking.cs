@@ -8,7 +8,7 @@ namespace HotelApp3.Models
 {
     public class Booking
     {
-        public int BookingId { get; set; }
+        public int Id { get; set; }
         public int CustomerId { get; set; }
         public int RoomId { get; set; }
         public DateTime StartDate { get; set; }

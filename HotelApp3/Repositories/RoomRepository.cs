@@ -24,7 +24,7 @@ namespace HotelApp3.Repositories
 
         public Room GetRoomById(int id)
         {
-            return _context.Rooms.FirstOrDefault(r => r.RoomId == id);
+            return _context.Rooms.FirstOrDefault(r => r.Id == id);
         }
 
         public void AddRoom(Room room)
@@ -41,7 +41,7 @@ namespace HotelApp3.Repositories
 
         public void DeleteRoom(int id)
         {
-            var room = _context.Rooms.FirstOrDefault(r => r.RoomId == id);
+            var room = _context.Rooms.FirstOrDefault(r => r.Id == id);
             if (room != null)
             {
                 _context.Rooms.Remove(room);

@@ -8,7 +8,7 @@ namespace HotelApp3.Models
 {
     public class Room
     {
-        public int RoomId { get; set; }
+        public int Id { get; set; }
         public string Type { get; set; }
         public int MaxCapacity { get; set; }
         public decimal PricePerNight { get; set; }

@@ -64,7 +64,7 @@ namespace HotelApp3.Utilities.Functions
             var rooms = _roomService.GetAllRooms().ToList();
             foreach (var room in rooms)
             {
-                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+                Console.WriteLine($"ID: {room.Id}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
             Console.WriteLine("Tryck på valfri tangent.");
             Console.ReadKey();

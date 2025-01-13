@@ -24,7 +24,7 @@ namespace HotelApp3.Repositories
 
         public Customer GetCustomerById(int id)
         {
-            return _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+            return _context.Customers.FirstOrDefault(c => c.Id == id);
         }
 
         public void AddCustomer(Customer customer)
@@ -41,7 +41,7 @@ namespace HotelApp3.Repositories
 
         public void DeleteCustomer(int id)
         {
-            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == id);
+            var customer = _context.Customers.FirstOrDefault(c => c.Id == id);
             if (customer != null)
             {
                 _context.Customers.Remove(customer);

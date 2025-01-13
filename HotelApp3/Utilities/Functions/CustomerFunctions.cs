@@ -64,7 +64,7 @@ namespace HotelApp3.Utilities.Functions
             var customers = _customerService.GetAllCustomers().ToList();
             foreach (var customer in customers)
             {
-                Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
+                Console.WriteLine($"ID: {customer.Id}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
             }
             Console.WriteLine("Tryck på valfri tangent.");
             Console.ReadKey();
