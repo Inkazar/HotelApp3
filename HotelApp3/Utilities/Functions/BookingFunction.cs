@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HotelApp3.Utilities.Functions
@@ -98,12 +99,42 @@ namespace HotelApp3.Utilities.Functions
             int customerId;
             if (addCustomerChoice == "ja")
             {
-                Console.Write("Ange kundens namn: ");
-                var name = Console.ReadLine();
-                Console.Write("Ange kundens e-post: ");
-                var email = Console.ReadLine();
-                Console.Write("Ange kundens telefonnummer: ");
-                var phone = Console.ReadLine();
+                string name;
+                do
+                {
+                    Console.Write("Ange kundens namn (för- och efternamn): ");
+                    name = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(name) || !Regex.IsMatch(name, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
+                    {
+                        Console.WriteLine("Ogiltigt namn. Namnet måste innehålla för- och efternamn och får inte innehålla siffror.");
+                        name = null;
+                    }
+                } while (name == null);
+
+                string email;
+                do
+                {
+                    Console.Write("Ange kundens e-post: ");
+                    email = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    {
+                        Console.WriteLine("Ogiltig e-postadress. Försök igen.");
+                        email = null;
+                    }
+                } while (email == null);
+
+                string phone;
+                do
+                {
+                    Console.Write("Ange kundens telefonnummer: ");
+                    phone = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(phone) || !Regex.IsMatch(phone, @"^\d{7,15}$"))
+                    {
+                        Console.WriteLine("Ogiltigt telefonnummer. Ange endast siffror (7-15 tecken).");
+                        phone = null;
+                    }
+                } while (phone == null);
+                
 
                 var newCustomer = new Customer { Name = name, Email = email, Phone = phone };
                 _customerService.AddCustomer(newCustomer);

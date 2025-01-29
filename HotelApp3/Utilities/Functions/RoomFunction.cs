@@ -168,6 +168,7 @@ namespace HotelApp3.Utilities.Functions
                 if (room == null || room.MaxCapacity <= 2)
                 {
                     Console.WriteLine("Extrasäng kan endast läggas till i rum med kapacitet större än 2. Försök igen.");
+                    Console.ReadKey();
                 }
             } while (room == null || room.MaxCapacity <= 2);
 

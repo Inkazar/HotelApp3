@@ -18,42 +18,68 @@ namespace HotelApp3.Utilities.Functions
             _customerService = customerService;
         }
 
-        public void AddCustomer()
+        public string GetValidCustomerName()
         {
-            Console.Clear();
-            Console.WriteLine("--- Lägg till kund ---");
+            string name;
+            do
+            {
+                Console.Write("Ange kundens namn (för- och efternamn): ");
+                name = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(name) || !Regex.IsMatch(name, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
+                {
+                    Console.WriteLine("Ogiltigt namn. Namnet måste innehålla för- och efternamn och får inte innehålla siffror.");
+                    name = null;
+                }
+            } while (name == null);
+            return name;
+        }
 
-            Console.Write("Ange namn: ");
-            var name = Console.ReadLine();
-
+        public string GetValidEmail()
+        {
             string email;
             do
             {
-                Console.Write("Ange e-post: ");
+                Console.Write("Ange kundens e-post: ");
                 email = Console.ReadLine();
-                if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
                     Console.WriteLine("Ogiltig e-postadress. Försök igen.");
                     email = null;
                 }
             } while (email == null);
+            return email;
+        }
 
+        public string GetValidPhoneNumber()
+        {
             string phone;
             do
             {
-                Console.Write("Ange telefonnummer (endast siffror, 7-15 tecken): ");
+                Console.Write("Ange kundens telefonnummer: ");
                 phone = Console.ReadLine();
-                if (!Regex.IsMatch(phone, @"^\d{7,15}$"))
+                if (string.IsNullOrWhiteSpace(phone) || !Regex.IsMatch(phone, @"^\d{7,15}$"))
                 {
-                    Console.WriteLine("Ogiltigt telefonnummer. Försök igen.");
+                    Console.WriteLine("Ogiltigt telefonnummer. Ange endast siffror (7-15 tecken).");
                     phone = null;
                 }
             } while (phone == null);
+            return phone;
+        }
+
+        public int AddCustomer()
+        {
+            Console.Clear();
+            Console.WriteLine("--- Lägg till kund ---");
+
+            string name = GetValidCustomerName();
+            string email = GetValidEmail();
+            string phone = GetValidPhoneNumber();
 
             var newCustomer = new Customer { Name = name, Email = email, Phone = phone };
             _customerService.AddCustomer(newCustomer);
             Console.WriteLine("Kunden har lagts till!");
             Console.ReadKey();
+            return newCustomer.CustomerId;
         }
 
         public void ViewAllCustomers()
@@ -66,6 +92,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
             }
+            Console.WriteLine("===========================");
             Console.WriteLine("Tryck på valfri tangent.");
             Console.ReadKey();
         }
