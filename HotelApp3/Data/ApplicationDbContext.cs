@@ -53,10 +53,10 @@ namespace HotelApp3.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Room>().HasData(
-                new Room { RoomId = 1, Type = "Single", MaxCapacity = 1, PricePerNight = 500 },
-                new Room { RoomId = 2, Type = "Double", MaxCapacity = 2, PricePerNight = 800 },
-                new Room { RoomId = 3, Type = "Double", MaxCapacity = 2, PricePerNight = 900 },
-                new Room { RoomId = 4, Type = "Double", MaxCapacity = 4, PricePerNight = 1200 }
+                new Room { RoomId = 1, RoomType = "Single", MaxCapacity = 1, PricePerNight = 500 },
+                new Room { RoomId = 2, RoomType = "Double", MaxCapacity = 2, PricePerNight = 800 },
+                new Room { RoomId = 3, RoomType = "Double", MaxCapacity = 2, PricePerNight = 900 },
+                new Room { RoomId = 4, RoomType = "Double", MaxCapacity = 4, PricePerNight = 1200 }
             );
 
             modelBuilder.Entity<Customer>().HasData(

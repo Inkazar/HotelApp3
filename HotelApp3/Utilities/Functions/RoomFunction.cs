@@ -2,6 +2,7 @@
 using HotelApp3.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,26 +23,34 @@ namespace HotelApp3.Utilities.Functions
             Console.Clear();
             Console.WriteLine("--- Lägg till rum ---");
 
-            string type;
+            string roomType;
             do
             {
-                Console.Write("Ange typ (Single/Double): ");
-                type = Console.ReadLine()?.ToLower();
-            } while (type != "single" && type != "double");
+                Console.Write("Ange rumstyp (Single/Double): ");
+                roomType = Console.ReadLine()?.ToLower();
+                if (roomType != "single" && roomType != "double")
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Felaktig inmatning. Du måste ange 'Single' eller 'Double'.");
+                    Console.ResetColor();
+                    roomType = null;
+                }
+            } while (roomType == null);
 
             int maxCapacity;
             do
             {
                 Console.Write("Ange maxkapacitet: ");
-                if (type == "single" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity == 1)
+                if (roomType == "single" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity == 1)
                 {
                     break;
                 }
-                else if (type == "double" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity > 1)
+                else if (roomType == "double" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity > 1)
                 {
                     break;
                 }
-                Console.WriteLine(type == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Ett dubbelrum måste ha kapacitet större än 1.");
+                Console.WriteLine(roomType == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Ett dubbelrum måste ha kapacitet större än 1.");
             } while (true);
 
             decimal pricePerNight;
@@ -50,7 +59,7 @@ namespace HotelApp3.Utilities.Functions
                 Console.Write("Ange pris per natt: ");
             } while (!decimal.TryParse(Console.ReadLine(), out pricePerNight));
 
-            var newRoom = new Room { Type = type, MaxCapacity = maxCapacity, PricePerNight = pricePerNight, ExtraBeds = 0 };
+            var newRoom = new Room { RoomType = roomType, MaxCapacity = maxCapacity, PricePerNight = pricePerNight, ExtraBeds = 0 };
             _roomService.AddRoom(newRoom);
             Console.WriteLine("Rummet har lagts till!");
             Console.ReadKey();
@@ -64,7 +73,7 @@ namespace HotelApp3.Utilities.Functions
             var rooms = _roomService.GetAllRooms().ToList();
             foreach (var room in rooms)
             {
-                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.RoomType}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
             Console.WriteLine("===========================");
         }
@@ -89,7 +98,7 @@ namespace HotelApp3.Utilities.Functions
                 return;
             }
 
-            Console.WriteLine($"Nuvarande typ: {room.Type}");
+            Console.WriteLine($"Nuvarande typ: {room.RoomType}");
             string newType;
             do
             {
@@ -101,7 +110,7 @@ namespace HotelApp3.Utilities.Functions
                 }
                 Console.WriteLine("Ogiltig typ. Du måste ange 'single' eller 'double'.");
             } while (true);
-            room.Type = string.IsNullOrWhiteSpace(newType) ? room.Type : newType;
+            room.RoomType = string.IsNullOrWhiteSpace(newType) ? room.RoomType : newType;
 
             Console.WriteLine($"Nuvarande kapacitet: {room.MaxCapacity}");
             int newCapacity;
@@ -114,11 +123,11 @@ namespace HotelApp3.Utilities.Functions
                     newCapacity = room.MaxCapacity;
                     break;
                 }
-                if (int.TryParse(input, out newCapacity) && newCapacity > 0 && (room.Type != "single" || newCapacity == 1))
+                if (int.TryParse(input, out newCapacity) && newCapacity > 0 && (room.RoomType != "single" || newCapacity == 1))
                 {
                     break;
                 }
-                Console.WriteLine(room.Type == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Kapaciteten måste vara ett positivt heltal.");
+                Console.WriteLine(room.RoomType == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Kapaciteten måste vara ett positivt heltal.");
             } while (true);
             room.MaxCapacity = newCapacity;
 
@@ -158,7 +167,30 @@ namespace HotelApp3.Utilities.Functions
                 Console.Write("Ange ID för rummet att ta bort: ");
             } while (!int.TryParse(Console.ReadLine(), out roomId));
 
-            _roomService.DeleteRoom(roomId);
+            string confirmation;
+            do
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("--- Bekräfta borttagning av Rum ---");
+                Console.WriteLine($"Är du säker på att du vill ta bort: {roomId}? (ja/nej)");
+                Console.ResetColor();
+                confirmation = Console.ReadLine()?.Trim().ToLower();
+                if (confirmation == "nej")
+                {
+                    Console.WriteLine("Åtgärden avbröts. Rummet har inte tagits bort.");
+                    Console.ReadKey();
+                    return;
+                }
+                else if (confirmation != "ja" && confirmation != "nej")
+                {
+                    Console.WriteLine("Felaktig inmatning. Ange 'ja' för att bekräfta eller 'nej' för att avbryta.");
+                }
+            } while (confirmation != "ja");
+
+        
+
+        _roomService.DeleteRoom(roomId);
             Console.WriteLine("Rummet har tagits bort!");
             Console.ReadKey();
         }

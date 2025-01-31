@@ -10,7 +10,7 @@ namespace HotelApp3.Models
     public class Room
     {
         public int RoomId { get; set; }
-        public string Type { get; set; }
+        public string RoomType { get; set; }
         public int MaxCapacity { get; set; }
         public decimal PricePerNight { get; set; }
         public int ExtraBeds { get; set; } // Antal extra sängar

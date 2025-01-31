@@ -94,7 +94,7 @@ namespace HotelApp3.Utilities.Functions
 
             foreach (var room in availableRooms)
             {
-                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.RoomType}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
 
             int roomId;
@@ -290,7 +290,7 @@ namespace HotelApp3.Utilities.Functions
 
             foreach (var room in availableRooms)
             {
-                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
+                Console.WriteLine($"ID: {room.RoomId}, Typ: {room.RoomType}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
 
             int roomId;
