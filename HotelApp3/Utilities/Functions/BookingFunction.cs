@@ -34,22 +34,37 @@ namespace HotelApp3.Utilities.Functions
             do
             {
                 Console.Write("Ange startdatum (yyyy-MM-dd): ");
-                if (DateTime.TryParse(Console.ReadLine(), out startDate) && startDate >= DateTime.Today)
+                string input = Console.ReadLine();
+                if (!DateTime.TryParseExact(input, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out startDate))
                 {
-                    break;
+                    Console.Clear();
+                    Console.WriteLine("Felaktigt format. Ange ett giltigt datum i formatet yyyy-MM-dd.");
+                    continue;
                 }
-                Console.WriteLine("Startdatum får inte vara i dåtid. Försök igen.");
+                if (startDate < DateTime.Today)
+                {
+                    Console.WriteLine("Startdatum får inte vara i dåtid. Försök igen.");
+                    continue;
+                }
+                break;
             } while (true);
 
             DateTime endDate;
             do
             {
                 Console.Write("Ange slutdatum (yyyy-MM-dd): ");
-                if (DateTime.TryParse(Console.ReadLine(), out endDate) && endDate > startDate)
+                string input = Console.ReadLine();
+                if (!DateTime.TryParseExact(input, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out endDate))
                 {
-                    break;
+                    Console.WriteLine("Felaktigt format. Ange ett giltigt datum i formatet yyyy-MM-dd.");
+                    continue;
                 }
-                Console.WriteLine("Slutdatum måste vara efter startdatum. Försök igen.");
+                if (endDate <= startDate)
+                {
+                    Console.WriteLine("Slutdatum måste vara efter startdatum. Försök igen.");
+                    continue;
+                }
+                break;
             } while (true);
 
             Console.WriteLine("Tillgängliga Rum:");
