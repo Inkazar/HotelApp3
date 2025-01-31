@@ -102,8 +102,8 @@ namespace HotelApp3.Utilities.Functions
                 Console.WriteLine($"ID: {customer.CustomerId}, Namn: {customer.Name}, E-post: {customer.Email}, Telefon: {customer.Phone}");
             }
             Console.WriteLine("===========================");
-            Console.WriteLine("Tryck på valfri tangent.");
-            Console.ReadKey();
+            /*Console.WriteLine("Tryck på valfri tangent.");
+            Console.ReadKey();*/
         }
 
         public void UpdateCustomer()
@@ -206,12 +206,12 @@ namespace HotelApp3.Utilities.Functions
             int customerId;
             while (!int.TryParse(Console.ReadLine(), out customerId) || customerId <= 0)
             {
-                Console.Clear();
+                
                
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Felaktigt ID. Ange ett giltigt numeriskt kund-ID.");
                 Console.ResetColor();
-                ViewAllCustomers();
+               
                 Console.Write("Ange kundens ID att ta bort: ");
             }
 

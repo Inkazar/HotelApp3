@@ -121,7 +121,10 @@ namespace HotelApp3.Utilities.Functions
                     name = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(name) || !Regex.IsMatch(name, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
                     {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltigt namn. Namnet måste innehålla för- och efternamn och får inte innehålla siffror.");
+                        Console.ResetColor();
                         name = null;
                     }
                 } while (name == null);
@@ -133,7 +136,10 @@ namespace HotelApp3.Utilities.Functions
                     email = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                     {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltig e-postadress. Försök igen.");
+                        Console.ResetColor();
                         email = null;
                     }
                 } while (email == null);
@@ -145,7 +151,10 @@ namespace HotelApp3.Utilities.Functions
                     phone = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(phone) || !Regex.IsMatch(phone, @"^\d{7,15}$"))
                     {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltigt telefonnummer. Ange endast siffror (7-15 tecken).");
+                        Console.ResetColor();
                         phone = null;
                     }
                 } while (phone == null);
@@ -210,8 +219,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"Bokning-ID: {booking.BookingId}, Kund-ID: {booking.CustomerId}, Rum-ID: {booking.RoomId}, Startdatum: {booking.StartDate:yyyy-MM-dd}, Slutdatum: {booking.EndDate:yyyy-MM-dd}, Extrasängar: {booking.ExtraBeds}");
             }
-            Console.WriteLine("Tryck på valfri tangent för att återgå.");
-            Console.ReadKey();
+            Console.WriteLine("===========================");
         }
     }
 }

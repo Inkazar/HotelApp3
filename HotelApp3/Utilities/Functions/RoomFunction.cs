@@ -66,8 +66,7 @@ namespace HotelApp3.Utilities.Functions
             {
                 Console.WriteLine($"ID: {room.RoomId}, Typ: {room.Type}, Kapacitet: {room.MaxCapacity}, Pris/Natt: {room.PricePerNight:C}, Extrasängar: {room.ExtraBeds}");
             }
-            Console.WriteLine("Tryck på valfri tangent.");
-            Console.ReadKey();
+            Console.WriteLine("===========================");
         }
 
         public void UpdateRoom()

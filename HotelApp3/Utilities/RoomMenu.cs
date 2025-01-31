@@ -40,6 +40,8 @@ namespace HotelApp3.Utilities
                         break;
                     case "2":
                         _controller.ViewAllRooms();
+                        Console.WriteLine("Tryck på valfri tangent för att återgå.");
+                        Console.ReadKey();
                         break;
                     case "3":
                         _controller.UpdateRoom();
