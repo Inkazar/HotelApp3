@@ -404,6 +404,27 @@ namespace HotelApp3.Utilities.Functions
                 Console.Write("Ange boknings-ID att ta bort: ");
             } while (!int.TryParse(Console.ReadLine(), out bookingId));
 
+            string confirmation;
+            do
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("--- Bekräfta borttagning av Bokning ---");
+                Console.WriteLine($"Är du säker på att du vill ta bort: {bookingId}? (ja/nej)");
+                Console.ResetColor();
+                confirmation = Console.ReadLine()?.Trim().ToLower();
+                if (confirmation == "nej")
+                {
+                    Console.WriteLine("Åtgärden avbröts. Bokningen har inte tagits bort.");
+                    Console.ReadKey();
+                    return;
+                }
+                else if (confirmation != "ja" && confirmation != "nej")
+                {
+                    Console.WriteLine("Felaktig inmatning. Ange 'ja' för att bekräfta eller 'nej' för att avbryta.");
+                }
+            } while (confirmation != "ja");
+
             _bookingService.DeleteBooking(bookingId);
             Console.WriteLine("Bokningen har tagits bort!");
             Console.ReadKey();
