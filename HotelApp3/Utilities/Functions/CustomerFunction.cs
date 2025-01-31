@@ -145,15 +145,25 @@ namespace HotelApp3.Utilities.Functions
 
             Console.WriteLine($"Nuvarande e-post: {customer.Email}");
             Console.Write("Ange ny e-post (tryck Enter för att behålla): ");
-            var newEmail = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(newEmail) && Regex.IsMatch(newEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            string newEmail;
+            do
             {
-                customer.Email = newEmail;
-            }
-            else if (!string.IsNullOrWhiteSpace(newEmail))
-            {
-                Console.WriteLine("Ogiltig e-postadress. Ingen ändring gjord.");
-            }
+                Console.Write("Ange ny e-post (tryck Enter för att behålla): ");
+                newEmail = Console.ReadLine()?.Trim();
+                if (string.IsNullOrWhiteSpace(newEmail))
+                {
+                    newEmail = customer.Email;
+                    break;
+                }
+                if (!Regex.IsMatch(newEmail, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Felaktig e-postadress. Ange en giltig e-postadress eller tryck Enter för att behålla den befintliga.");
+                    Console.ResetColor();
+                    newEmail = null;
+                }
+            } while (newEmail == null);
 
             Console.WriteLine($"Nuvarande telefonnummer: {customer.Phone}");
             Console.Write("Ange nytt telefonnummer (tryck Enter för att behålla): ");
@@ -181,7 +191,12 @@ namespace HotelApp3.Utilities.Functions
             int customerId;
             while (!int.TryParse(Console.ReadLine(), out customerId) || customerId <= 0)
             {
+                Console.Clear();
+               
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Felaktigt ID. Ange ett giltigt numeriskt kund-ID.");
+                Console.ResetColor();
+                ViewAllCustomers();
                 Console.Write("Ange kundens ID att ta bort: ");
             }
 
