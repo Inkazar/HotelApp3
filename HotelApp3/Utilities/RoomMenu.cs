@@ -59,8 +59,10 @@ namespace HotelApp3.Utilities
                         back = true;
                         break;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Ogiltigt val. Försök igen.");
-                        Console.ReadKey();
+                        System.Threading.Thread.Sleep(1000);
+                        Console.ResetColor();
                         break;
                 }
             }
