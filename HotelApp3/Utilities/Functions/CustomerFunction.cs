@@ -27,7 +27,10 @@ namespace HotelApp3.Utilities.Functions
                 name = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(name) || !Regex.IsMatch(name, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
                 {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt namn. Namnet måste innehålla för- och efternamn och får inte innehålla siffror.");
+                    Console.ResetColor();
                     name = null;
                 }
             } while (name == null);
@@ -43,7 +46,10 @@ namespace HotelApp3.Utilities.Functions
                 email = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(email) || !Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltig e-postadress. Försök igen.");
+                    Console.ResetColor();
                     email = null;
                 }
             } while (email == null);
@@ -59,7 +65,10 @@ namespace HotelApp3.Utilities.Functions
                 phone = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(phone) || !Regex.IsMatch(phone, @"^\d{7,15}$"))
                 {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Ogiltigt telefonnummer. Ange endast siffror (7-15 tecken).");
+                    Console.ResetColor();
                     phone = null;
                 }
             } while (phone == null);
@@ -118,9 +127,21 @@ namespace HotelApp3.Utilities.Functions
             }
 
             Console.WriteLine($"Nuvarande namn: {customer.Name}");
-            Console.Write("Ange nytt namn (tryck Enter för att behålla): ");
-            var newName = Console.ReadLine();
-            customer.Name = string.IsNullOrWhiteSpace(newName) ? customer.Name : newName;
+            string newName;
+            do
+            {
+                Console.Write("Ange nytt namn (för- och efternamn): ");
+                newName = Console.ReadLine()?.Trim();
+                if (string.IsNullOrWhiteSpace(newName) || !Regex.IsMatch(newName, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Felaktigt namn. Ange ett giltigt för- och efternamn utan siffror eller specialtecken.");
+                    Console.ResetColor();
+                    newName = null;
+                }
+            } while (newName == null);
+
 
             Console.WriteLine($"Nuvarande e-post: {customer.Email}");
             Console.Write("Ange ny e-post (tryck Enter för att behålla): ");
