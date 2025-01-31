@@ -26,10 +26,19 @@ namespace HotelApp3.Services
         {
             _repository.AddBooking(booking);
         }
-
+        public void UpdateBooking(Booking booking)
+        {
+            _repository.UpdateBooking(booking);
+        }
         public void DeleteBooking(int bookingId)
         {
             _repository.DeleteBooking(bookingId);
         }
+        public Booking GetBookingById(int bookingId)
+        {
+            return _repository.GetById(bookingId);
+        }
+
+        
     }
 }

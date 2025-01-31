@@ -23,5 +23,7 @@ namespace HotelApp3.Controllers
         public void DeleteBooking() => _handler.DeleteBooking();
 
         public void ViewBookings() => _handler.ViewBookings();
+        
+        public void BookingUpdate() => _handler.UpdateBooking();
     }
 }

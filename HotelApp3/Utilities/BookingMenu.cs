@@ -26,7 +26,8 @@ namespace HotelApp3.Utilities
                 Console.WriteLine("1. Lägg till bokning");
                 Console.WriteLine("2. Ta bort bokning");
                 Console.WriteLine("3. Visa alla bokningar");
-                Console.WriteLine("4. Gå tillbaka till huvudmenyn");
+                Console.WriteLine("4. Uppdatera bokningar");
+                Console.WriteLine("5. Gå tillbaka till huvudmenyn");
                 Console.Write("Välj ett alternativ: ");
 
                 var choice = Console.ReadLine();
@@ -44,6 +45,9 @@ namespace HotelApp3.Utilities
                         Console.ReadKey();
                         break;
                     case "4":
+                        _controller.BookingUpdate();
+                        break;
+                    case "5":
                         back = true;
                         break;
                     default:

@@ -27,6 +27,27 @@ namespace HotelApp3.Repositories
             _context.Bookings.Add(booking);
             _context.SaveChanges();
         }
+        public void UpdateBooking(Booking booking)
+        {
+            var existingBooking = _context.Bookings.Find(booking.BookingId);
+            if (existingBooking != null)
+            {
+                existingBooking.StartDate = booking.StartDate;
+                existingBooking.EndDate = booking.EndDate;
+                existingBooking.ExtraBeds = booking.ExtraBeds;
+                _context.SaveChanges();
+            }
+        }
+
+        public Booking GetById(int bookingId)
+        {
+            return _context.Bookings.Find(bookingId);
+        }
+
+        public IEnumerable<Booking> GetAll()
+        {
+            return _context.Bookings.ToList();
+        }
 
         public void DeleteBooking(int bookingId)
         {
