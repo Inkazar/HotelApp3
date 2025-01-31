@@ -130,9 +130,14 @@ namespace HotelApp3.Utilities.Functions
             string newName;
             do
             {
-                Console.Write("Ange nytt namn (för- och efternamn): ");
+                Console.Write("Ange nytt namn, för- och efternamn (eller tryck enter för att behålla): ");
                 newName = Console.ReadLine()?.Trim();
-                if (string.IsNullOrWhiteSpace(newName) || !Regex.IsMatch(newName, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
+                if (string.IsNullOrWhiteSpace(newName))
+                {
+                    newName = customer.Name;
+                    break;
+                }
+                if (!Regex.IsMatch(newName, @"^[a-zA-Z]+\s[a-zA-Z]+$"))
                 {
                     Console.Clear();
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -144,7 +149,7 @@ namespace HotelApp3.Utilities.Functions
 
 
             Console.WriteLine($"Nuvarande e-post: {customer.Email}");
-            Console.Write("Ange ny e-post (tryck Enter för att behålla): ");
+            
             string newEmail;
             do
             {
@@ -166,16 +171,26 @@ namespace HotelApp3.Utilities.Functions
             } while (newEmail == null);
 
             Console.WriteLine($"Nuvarande telefonnummer: {customer.Phone}");
-            Console.Write("Ange nytt telefonnummer (tryck Enter för att behålla): ");
-            var newPhone = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(newPhone) && Regex.IsMatch(newPhone, @"^\d{7,15}$"))
+            string newPhone;
+            do
             {
-                customer.Phone = newPhone;
-            }
-            else if (!string.IsNullOrWhiteSpace(newPhone))
-            {
-                Console.WriteLine("Ogiltigt telefonnummer. Ingen ändring gjord.");
-            }
+                Console.Write("Ange nytt telefonnummer (tryck Enter för att behålla): ");
+                newPhone = Console.ReadLine()?.Trim();
+                if (string.IsNullOrWhiteSpace(newPhone))
+                {
+                    newPhone = customer.Phone;
+                    break;
+                }
+                if (!Regex.IsMatch(newPhone, @"^\d{7,15}$"))
+                {
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Felaktigt telefonnummer. Ange ett giltigt nummer (7-15 siffror) eller tryck Enter för att behålla det befintliga.");
+                    Console.ResetColor();
+                    newPhone = null;
+                }
+            } while (newPhone == null);
+
 
             _customerService.UpdateCustomer(customer);
             Console.WriteLine("Kunduppgifterna har uppdaterats!");
@@ -211,7 +226,11 @@ namespace HotelApp3.Utilities.Functions
             string confirmation;
             do
             {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("--- Bekräfta borttagning av kund ---");
                 Console.WriteLine($"Är du säker på att du vill ta bort kunden: {customer.Name}? (ja/nej)");
+                Console.ResetColor();
                 confirmation = Console.ReadLine()?.Trim().ToLower();
                 if (confirmation == "nej")
                 {
