@@ -27,7 +27,7 @@ namespace HotelApp3.Utilities.Functions
             do
             {
                 Console.Write("Ange rumstyp (Single/Double): ");
-                roomType = Console.ReadLine()?.ToLower();
+                roomType = Console.ReadLine()?.Trim().ToLower();
                 if (roomType != "single" && roomType != "double")
                 {
                     Console.Clear();
@@ -38,26 +38,41 @@ namespace HotelApp3.Utilities.Functions
                 }
             } while (roomType == null);
 
-            int maxCapacity;
-            do
+            int maxCapacity = roomType == "single" ? 1 : 0;
+            if (roomType == "double")
             {
-                Console.Write("Ange maxkapacitet: ");
-                if (roomType == "single" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity == 1)
+                do
                 {
-                    break;
-                }
-                else if (roomType == "double" && int.TryParse(Console.ReadLine(), out maxCapacity) && maxCapacity > 1)
-                {
-                    break;
-                }
-                Console.WriteLine(roomType == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Ett dubbelrum måste ha kapacitet större än 1.");
-            } while (true);
+                    Console.Write("Ange maxkapacitet (2-4): ");
+                    if (!int.TryParse(Console.ReadLine(), out maxCapacity) || maxCapacity < 2 || maxCapacity > 4)
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Felaktigt värde. Ett dubbelrum kan ha en kapacitet på mellan 2 och 4 personer.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        break;
+                    }
+                } while (true);
+            }
 
             decimal pricePerNight;
-            do
+            while(true)
             {
                 Console.Write("Ange pris per natt: ");
-            } while (!decimal.TryParse(Console.ReadLine(), out pricePerNight));
+               string input = Console.ReadLine();
+                if (decimal.TryParse(input, out pricePerNight) && pricePerNight > 1)
+                {
+                    break;
+                }
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Felaktigt pris. Ange ett giltigt numeriskt värde större än 0.");
+                Console.ResetColor();
+            }
+           
 
             var newRoom = new Room { RoomType = roomType, MaxCapacity = maxCapacity, PricePerNight = pricePerNight, ExtraBeds = 0 };
             _roomService.AddRoom(newRoom);
@@ -97,38 +112,47 @@ namespace HotelApp3.Utilities.Functions
                 Console.ReadKey();
                 return;
             }
-
+            Console.Clear();
             Console.WriteLine($"Nuvarande typ: {room.RoomType}");
             string newType;
             do
             {
-                Console.Write("Ange ny typ (Single/Double eller tryck Enter för att behålla): ");
-                newType = Console.ReadLine()?.ToLower();
+                Console.Write($"Ange ny typ (Single/Double eller tryck Enter för att behålla typen {room.RoomType}): ");
+                newType = Console.ReadLine()?.Trim().ToLower();
                 if (string.IsNullOrWhiteSpace(newType) || newType == "single" || newType == "double")
                 {
                     break;
                 }
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Ogiltig typ. Du måste ange 'single' eller 'double'.");
+                Console.ResetColor();
             } while (true);
-            room.RoomType = string.IsNullOrWhiteSpace(newType) ? room.RoomType : newType;
+            newType = string.IsNullOrWhiteSpace(newType) ? room.RoomType : newType;
 
-            Console.WriteLine($"Nuvarande kapacitet: {room.MaxCapacity}");
-            int newCapacity;
-            do
+           
+            int newCapacity = newType == "single" ? 1 : 0;
+            if (newType == "double")
             {
-                Console.Write("Ange ny kapacitet (endast siffror, tryck Enter för att behålla): ");
-                var input = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(input))
-                {
-                    newCapacity = room.MaxCapacity;
-                    break;
+                do
+                {   
+                    Console.WriteLine($"Nuvarande kapacitet: {room.MaxCapacity}");
+                    Console.WriteLine("Ange ny maxcapacitet (2-4): ");
+                   
+                    if (!int.TryParse(Console.ReadLine(), out newCapacity) || newCapacity < 2 || newCapacity > 4)
+                    {
+                        Console.Clear();
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Felaktigt värde. Ett dubbelrum kan ha en kapacitet på mellan 2 och 4 personer.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                if (int.TryParse(input, out newCapacity) && newCapacity > 0 && (room.RoomType != "single" || newCapacity == 1))
-                {
-                    break;
-                }
-                Console.WriteLine(room.RoomType == "single" ? "Ett singelrum kan endast ha kapacitet 1." : "Kapaciteten måste vara ett positivt heltal.");
-            } while (true);
+                while (true);
+            }
             room.MaxCapacity = newCapacity;
 
             Console.WriteLine($"Nuvarande pris: {room.PricePerNight:C}");
@@ -142,11 +166,15 @@ namespace HotelApp3.Utilities.Functions
                     newPrice = room.PricePerNight;
                     break;
                 }
-                if (decimal.TryParse(input, out newPrice) && newPrice > 0)
+                if (decimal.TryParse(input, out newPrice) && newPrice > 1)
                 {
                     break;
                 }
-                Console.WriteLine("Felaktigt pris. Ange ett giltigt numeriskt värde större än 0 eller tryck Enter för att behålla det nuvarande priset.");
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Felaktigt pris. Ange ett giltigt numeriskt värde större än 1 eller tryck " +
+                    $"Enter för att behålla det nuvarande priset \n {room.PricePerNight:C}.");
+                Console.ResetColor();
             }
 
             room.PricePerNight = newPrice;
@@ -210,8 +238,12 @@ namespace HotelApp3.Utilities.Functions
                 room = _roomService.GetRoomById(roomId);
                 if (room == null || room.MaxCapacity <= 2)
                 {
-                    Console.WriteLine("Extrasäng kan endast läggas till i rum med kapacitet större än 2. Försök igen.");
+                    Console.Clear();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("Extrasäng kan endast läggas till i rum med kapacitet större än 2. Försök igen.");
                     Console.ReadKey();
+                    Console.ResetColor();
+                    
                 }
             } while (room == null || room.MaxCapacity <= 2);
 
