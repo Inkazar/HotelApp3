@@ -124,12 +124,24 @@ namespace HotelApp3.Utilities.Functions
             room.MaxCapacity = newCapacity;
 
             Console.WriteLine($"Nuvarande pris: {room.PricePerNight:C}");
-            Console.Write("Ange nytt pris (tryck Enter för att behålla): ");
-            if (decimal.TryParse(Console.ReadLine(), out decimal newPrice) && newPrice > 0)
+            decimal newPrice;
+            while (true)
             {
-                room.PricePerNight = newPrice;
+                Console.Write("Ange nytt pris (tryck Enter för att behålla): ");
+                string input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    newPrice = room.PricePerNight;
+                    break;
+                }
+                if (decimal.TryParse(input, out newPrice) && newPrice > 0)
+                {
+                    break;
+                }
+                Console.WriteLine("Felaktigt pris. Ange ett giltigt numeriskt värde större än 0 eller tryck Enter för att behålla det nuvarande priset.");
             }
 
+            room.PricePerNight = newPrice;
             _roomService.UpdateRoom(room);
             Console.WriteLine("Rumsuppgifterna har uppdaterats.");
             Console.ReadKey();
