@@ -156,12 +156,38 @@ namespace HotelApp3.Utilities.Functions
             Console.Clear();
             Console.WriteLine("--- Ta bort kund ---");
             ViewAllCustomers();
-
+            Console.Write("Ange kundens ID att ta bort: ");
             int customerId;
+            while (!int.TryParse(Console.ReadLine(), out customerId) || customerId <= 0)
+            {
+                Console.WriteLine("Felaktigt ID. Ange ett giltigt numeriskt kund-ID.");
+                Console.Write("Ange kundens ID att ta bort: ");
+            }
+
+            var customer = _customerService.GetCustomerById(customerId);
+            if (customer == null)
+            {
+                Console.WriteLine("Kunden hittades inte.");
+                Console.ReadKey();
+                return;
+            }
+
+            string confirmation;
             do
             {
-                Console.Write("Ange ID för kunden att ta bort: ");
-            } while (!int.TryParse(Console.ReadLine(), out customerId));
+                Console.WriteLine($"Är du säker på att du vill ta bort kunden: {customer.Name}? (ja/nej)");
+                confirmation = Console.ReadLine()?.Trim().ToLower();
+                if (confirmation == "nej")
+                {
+                    Console.WriteLine("Åtgärden avbröts. Kunden har inte tagits bort.");
+                    Console.ReadKey();
+                    return;
+                }
+                else if (confirmation != "ja" && confirmation != "nej")
+                {
+                    Console.WriteLine("Felaktig inmatning. Ange 'ja' för att bekräfta eller 'nej' för att avbryta.");
+                }
+            } while (confirmation != "ja");
 
             _customerService.DeleteCustomer(customerId);
             Console.WriteLine("Kunden har tagits bort!");
